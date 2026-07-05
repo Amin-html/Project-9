@@ -1,0 +1,13 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    host: '0.0.0.0',   // чтобы был доступен снаружи контейнера
+    port: 3000,
+    watch: {
+      usePolling: true // чтобы hot-reload работал внутри Docker
+    }
+  }
+})
