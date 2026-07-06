@@ -1,0 +1,33 @@
+@import '../styles/variables';
+
+.navbar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 0;
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  &__links {
+    display: flex;
+    gap: 24px;
+
+    a {
+      color: var(--text-secondary);
+      transition: color var(--transition);
+
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+}
