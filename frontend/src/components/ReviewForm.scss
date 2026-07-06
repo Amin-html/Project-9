@@ -1,0 +1,46 @@
+@import '../styles/variables';
+
+.review-form {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 16px;
+
+  &__rating {
+    margin-bottom: 12px;
+  }
+
+  &__login-hint {
+    color: var(--text-secondary);
+    padding: 16px;
+  }
+
+  &__error {
+    color: #ff5c5c;
+    font-size: 14px;
+    margin: 8px 0;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    resize: vertical;
+    margin-bottom: 12px;
+  }
+}
+
+.star {
+  font-size: 24px;
+  color: var(--border-color);
+  cursor: pointer;
+  transition: color var(--transition);
+
+  &--active {
+    color: var(--warning);
+  }
+}
