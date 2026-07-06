@@ -96,3 +96,18 @@
     color: var(--text-secondary);
   }
 }
+.btn-favorite {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+
+  &--active {
+    background: var(--warning);
+    color: #000;
+    border-color: var(--warning);
+  }
+}

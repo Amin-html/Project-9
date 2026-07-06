@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../api/axios'
 import ReviewForm from '../components/ReviewForm'
+import { AuthContext } from '../context/AuthContext'
 import './MotoDetail.scss'
 
 function MotoDetail() {
   const { id } = useParams()
+  const { isAuthenticated } = useContext(AuthContext)
   const [moto, setMoto] = useState(null)
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -22,10 +25,36 @@ function MotoDetail() {
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
+
+    // добавляем в историю просмотров, если авторизован
+    if (isAuthenticated) {
+      // отдельный silent-запрос, ошибку игнорируем — это не критично для UX
+      api.post(`/history/${id}/`).catch(() => {})
+    }
   }, [id])
 
+  // проверяем, есть ли этот мото уже в избранном
+  useEffect(() => {
+    if (!isAuthenticated) return
+    api.get('/favorites/')
+      .then(res => {
+        const found = res.data.some(fav => fav.motorcycle === Number(id))
+        setIsFavorite(found)
+      })
+      .catch(err => console.error(err))
+  }, [id, isAuthenticated])
+
+  const toggleFavorite = async () => {
+    if (!isAuthenticated) return
+    try {
+      const res = await api.post(`/favorites/${id}/`)
+      setIsFavorite(res.data.status === 'added')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const handleReviewAdded = (newReview) => {
-    // добавляем новый отзыв в начало списка без перезапроса всего списка
     setReviews(prev => [newReview, ...prev])
   }
 
@@ -48,6 +77,15 @@ function MotoDetail() {
           )}
           <p className="moto-detail__price">{moto.price.toLocaleString()} $</p>
 
+          {isAuthenticated && (
+            <button
+              className={isFavorite ? 'btn-favorite btn-favorite--active' : 'btn-favorite'}
+              onClick={toggleFavorite}
+            >
+              {isFavorite ? '★ В избранном' : '☆ В избранное'}
+            </button>
+          )}
+
           <div className="moto-detail__specs">
             <div><span>Год</span><strong>{moto.year}</strong></div>
             <div><span>Объём</span><strong>{moto.engine_volume} см³</strong></div>
@@ -62,7 +100,6 @@ function MotoDetail() {
       <section className="moto-detail__reviews">
         <h2>Отзывы</h2>
         <ReviewForm motoId={id} onReviewAdded={handleReviewAdded} />
-
         <div className="reviews-list">
           {reviews.length === 0 ? (
             <p>Пока нет отзывов — будьте первым!</p>
