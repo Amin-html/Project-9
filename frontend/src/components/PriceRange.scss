@@ -1,0 +1,41 @@
+@import '../styles/variables';
+
+.price-range {
+  &__labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  &__sliders {
+    position: relative;
+    height: 24px;
+
+    input[type="range"] {
+      position: absolute;
+      width: 100%;
+      top: 8px;
+      background: transparent;
+      -webkit-appearance: none;
+      pointer-events: none; // клик проходит только по thumb
+
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        pointer-events: auto;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        cursor: pointer;
+      }
+
+      &::-webkit-slider-runnable-track {
+        height: 4px;
+        background: var(--border-color);
+        border-radius: 2px;
+      }
+    }
+  }
+}
