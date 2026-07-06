@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework import generics, permissions
+from .models import UserProfile
+from .serializers import UserProfileSerializer
 
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
 # Create your views here.
