@@ -4,6 +4,7 @@ import api from '../api/axios'
 import ReviewForm from '../components/ReviewForm'
 import { AuthContext } from '../context/AuthContext'
 import './MotoDetail.scss'
+import { CompareContext } from '../context/CompareContext'
 
 function MotoDetail() {
   const { id } = useParams()
@@ -12,6 +13,8 @@ function MotoDetail() {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
   const [isFavorite, setIsFavorite] = useState(false)
+  const { toggleCompare, isInCompare } = useContext(CompareContext)
+  const inCompare = moto ? isInCompare(moto.id) : false
 
   useEffect(() => {
     setLoading(true)
@@ -79,11 +82,12 @@ function MotoDetail() {
 
           {isAuthenticated && (
             <button
-              className={isFavorite ? 'btn-favorite btn-favorite--active' : 'btn-favorite'}
-              onClick={toggleFavorite}
+              className={inCompare ? 'btn-favorite btn-favorite--active' : 'btn-favorite'}
+              onClick={() => toggleCompare(moto)}
             >
-              {isFavorite ? '★ В избранном' : '☆ В избранное'}
+              {inCompare ? '✓ В сравнении' : '+ Сравнить'}
             </button>
+
           )}
 
           <div className="moto-detail__specs">

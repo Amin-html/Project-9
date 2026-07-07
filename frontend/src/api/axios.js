@@ -1,11 +1,9 @@
 import axios from 'axios'
 
-// базовый инстанс — все запросы идут через него
 const api = axios.create({
   baseURL: 'http://localhost:8000/api',
 })
 
-// interceptor — добавляет токен к каждому запросу, если он есть
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token')
   if (token) {
@@ -13,5 +11,18 @@ api.interceptors.request.use((config) => {
   }
   return config
 })
+
+// если токен невалиден/просрочен — чистим localStorage,
+// чтобы битый токен не подставлялся в будущие запросы
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+    }
+    return Promise.reject(error)
+  }
+)
 
 export default api

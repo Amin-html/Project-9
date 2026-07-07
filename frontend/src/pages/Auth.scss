@@ -1,0 +1,52 @@
+@import '../styles/variables';
+
+.auth {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+
+  &__form {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 32px;
+    width: 100%;
+    max-width: 360px;
+
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 8px;
+    }
+  }
+
+  &__error {
+    color: #ff5c5c;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  &__switch {
+    text-align: center;
+    margin-top: 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+
+    a {
+      color: var(--accent);
+    }
+  }
+}
